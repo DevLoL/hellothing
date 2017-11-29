@@ -5,30 +5,23 @@
  */
 #include "ESPThing.h"
 
-bool ping = false;
-String ping_msg = "";
+const int relay = 5;
+int relayState = LOW;
 
-void pong_loop(String * msg) {
-    if (ping) {
-        ping = false;
-        *msg = ping_msg;
+void hello_cb(const MQTT::Publish& pub) {
+    if (pub.payload_string() == "hello") {
+        digitalWrite(relay, LOW);        
+        delay(200);
+        digitalWrite(relay, HIGH);        
+        delay(8000);
+        digitalWrite(relay, LOW);        
     }
 }
 
-void heartbeat_loop(String * msg) {
-    *msg = String(millis());
-}
-
-void ping_cb(const MQTT::Publish& pub) {
-    ping_msg = pub.payload_string();
-    ping = true;
-}
-
 void setup() {
-    Serial.begin(115200);
-    Thing.addOutput(Output("pong", pong_loop));
-    Thing.addOutput(Output("heartbeat", heartbeat_loop, 1000 * 60 * 3));
-    Thing.addInput(Input("ping", ping_cb));
+    pinMode(relay, OUTPUT);
+    digitalWrite(relay, LOW);
+    Thing.addInput(Input("hello", hello_cb));
 }
 
 void loop() {

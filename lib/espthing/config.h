@@ -17,11 +17,9 @@ typedef struct {
 thing_config_t config = {
     {
         { "/dev/lol", "4dprinter" },
-        { "dit.net", "Faid4Youters$8Thurning2Prats!" },
         { "Uplink", "level3support" },
-        { "Flughafenfeuerwehr", "gwdmilfeuerwehr" }
     },
-    "MS3000",
+    "hellothing",
     "mqtt.devlol.org",
     "devlol/things",
     60,
